@@ -2,4 +2,4 @@
 
 make clean
 make
-./PracticeTest
+./TicTacToeBoardTest

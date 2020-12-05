@@ -2,12 +2,14 @@
 # all code in SOURCECODE subdirectory. This Makefile is based on the
 # sample Makefile provided in the official GoogleTest GitHub Repo v1.7
 
+# REMOVED FOR REQUIRED ENV in CI GTEST_DIR = /usr/local/src/googletest/googletest
+
 # Flags passed to the preprocessor and compiler
-CPPFLAGS += --coverage -isystem $(GTEST_DIR)/include -std=c++11
+CPPFLAGS += --coverage -std=c++11 -isystem $(GTEST_DIR)/include
 CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.
-TESTS = PracticeTest
+TESTS = TicTacToeBoardTest
 
 # All Google Test headers. Adjust only if you moved the subdirectory
 GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
@@ -18,7 +20,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 all : $(TESTS)
 
 clean :
-	rm -f $(TESTS) gtest.a gtest_main.a *.o *.gcov *.gcda *.gcno
+	rm -f $(TESTS) gtest.a gtest_main.a *.o *.gcov *.gcda *.gcno *.gch
 
 # Builds gtest.a and gtest_main.a.
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
@@ -37,13 +39,13 @@ gtest.a : gtest-all.o
 gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ $^
 
-# Builds the class and associated tests
-Practice.o : Practice.cpp Practice.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c Practice.cpp
+# Builds the TicTacToeBoard class and associated TicTacToeBoardTest
+TicTacToeBoard.o : TicTacToeBoard.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c TicTacToeBoard.cpp
 
-PracticeTest.o : PracticeTest.cpp \
-                     Practice.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c PracticeTest.cpp
+TicTacToeBoardTest.o : TicTacToeBoardTest.cpp \
+                     TicTacToeBoard.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c TicTacToeBoardTest.cpp
 
-PracticeTest : Practice.o PracticeTest.o gtest_main.a
+TicTacToeBoardTest : TicTacToeBoard.o TicTacToeBoardTest.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
